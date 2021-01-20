@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-01-20 05:19:52 / Modified: 09:44:19" itemprop="dateCreated datePublished" datetime="2021-01-20T05:19:52+08:00">2021-01-20</time>
+              <time title="Created: 2021-01-20 05:19:52 / Modified: 09:47:15" itemprop="dateCreated datePublished" datetime="2021-01-20T05:19:52+08:00">2021-01-20</time>
             </span>
 
           
@@ -204,10 +204,8 @@
 <h6 id="2-2、编写C代码"><a href="#2-2、编写C代码" class="headerlink" title="2.2、编写C代码"></a>2.2、编写C代码</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world!&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="2-3、代码注解"><a href="#2-3、代码注解" class="headerlink" title="2.3、代码注解"></a>2.3、代码注解</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、#include &lt;stdio.h&gt;： 引入头文件，系统标准输入输出库</span><br><span class="line">2、int main(void)：创建空参main函数，返回值为整型</span><br><span class="line">3、&#123;&#125;: 函数体</span><br><span class="line">4、printf(&quot;hello world!&quot;);：像屏幕打印hello world！</span><br><span class="line">5、return 0;：函数运行结束返回0</span><br></pre></td></tr></table></figure>
 <h5 id="3、编译执行"><a href="#3、编译执行" class="headerlink" title="3、编译执行"></a>3、编译执行</h5><h6 id="3-1、编译源代码"><a href="#3-1、编译源代码" class="headerlink" title="3.1、编译源代码"></a>3.1、编译源代码</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gcc helloworld.c -o helloworld</span></span><br></pre></td></tr></table></figure>
-<p>3.2、运行可执行代码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./helloworld</span></span><br></pre></td></tr></table></figure>
-<p>3.3、解析gcc编译过程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">步骤如下：</span><br><span class="line">源代码文件-&gt;预处理-&gt;编译-&gt;汇编-&gt;链接-&gt;可执行文件</span><br></pre></td></tr></table></figure>
+<h6 id="3-2、运行可执行代码"><a href="#3-2、运行可执行代码" class="headerlink" title="3.2、运行可执行代码"></a>3.2、运行可执行代码</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./helloworld</span></span><br></pre></td></tr></table></figure>
+<h6 id="3-3、解析gcc编译过程"><a href="#3-3、解析gcc编译过程" class="headerlink" title="3.3、解析gcc编译过程"></a>3.3、解析gcc编译过程</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">步骤如下：</span><br><span class="line">源代码文件-&gt;预处理-&gt;编译-&gt;汇编-&gt;链接-&gt;可执行文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
