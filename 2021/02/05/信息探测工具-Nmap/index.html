@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介1Nmap(Network Mapper)是一款免费开源的实用程序，用于网络发现和安全审计。利用IP数据包确定主机是否可用，以及可用主机开通了哪些服务和他的操作系统版本。 使用语法1# nmap [Scan Type(s)] [Options] &amp;#123;target specification&amp;#125; 测试环境说明1内网地址(192.168.1.1)或是自己的博客域名(gacdu.co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息探测工具-Nmap">
+<meta property="og:url" content="http://example.com/2021/02/05/%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E5%B7%A5%E5%85%B7-Nmap/index.html">
+<meta property="og:site_name" content="灰度觉知">
+<meta property="og:description" content="简介1Nmap(Network Mapper)是一款免费开源的实用程序，用于网络发现和安全审计。利用IP数据包确定主机是否可用，以及可用主机开通了哪些服务和他的操作系统版本。 使用语法1# nmap [Scan Type(s)] [Options] &amp;#123;target specification&amp;#125; 测试环境说明1内网地址(192.168.1.1)或是自己的博客域名(gacdu.co">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-05T08:09:50.000Z">
+<meta property="article:modified_time" content="2021-02-05T21:35:00.918Z">
+<meta property="article:author" content="灰度觉知">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/02/05/%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E5%B7%A5%E5%85%B7-Nmap/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>信息探测工具-Nmap | 灰度觉知</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?acd64854f8a11073ae66b1445644c5a8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">灰度觉知</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/05/%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E5%B7%A5%E5%85%B7-Nmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="灰度觉知">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰度觉知">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息探测工具-Nmap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-05 16:09:50" itemprop="dateCreated datePublished" datetime="2021-02-05T16:09:50+08:00">2021-02-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-06 05:35:00" itemprop="dateModified" datetime="2021-02-06T05:35:00+08:00">2021-02-06</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/02/05/%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E5%B7%A5%E5%85%B7-Nmap/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/02/05/%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E5%B7%A5%E5%85%B7-Nmap/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Nmap(Network</span> <span class="string">Mapper)是一款免费开源的实用程序，用于网络发现和安全审计。利用IP数据包确定主机是否可用，以及可用主机开通了哪些服务和他的操作系统版本。</span></span><br></pre></td></tr></table></figure>
+<h5 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap [Scan Type(s)] [Options] &#123;target specification&#125;</span></span><br></pre></td></tr></table></figure>
+<h5 id="测试环境说明"><a href="#测试环境说明" class="headerlink" title="测试环境说明"></a>测试环境说明</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">内网地址(192.168.1.1)或是自己的博客域名(gacdu.com)</span></span><br></pre></td></tr></table></figure>
+<h5 id="端口状态"><a href="#端口状态" class="headerlink" title="端口状态"></a>端口状态</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">open：确定端口开放，可达。</span></span><br><span class="line"><span class="meta">closed：关闭的端口对于nmap也是可访问的，</span> <span class="string">它接收nmap探测报文并作出响应。但没有应用程序在其上监听。</span></span><br><span class="line"><span class="meta">filtered：由于包过滤阻止探测报文到达端口，Nmap无法确定该端口是否开放。过滤可能来自专业的防火墙设备，路由规则</span> <span class="string">或者主机上的软件防火墙。</span></span><br><span class="line"><span class="meta">unfiltered：未被过滤状态意味着端口可访问，但是Nmap无法确定它是开放还是关闭。只有用于映射防火墙规则集的</span> <span class="string">ACK 扫描才会把端口分类到这个状态。</span></span><br><span class="line"><span class="attr">open</span> <span class="string">| filtered：无法确定端口是开放还是被过滤，开放的端口不响应就是一个例子。没有响应也可能意味着报文过滤器丢弃了探测报文或者它引发的任何反应。UDP，IP协议,FIN, Null 等扫描会引起。</span></span><br><span class="line"><span class="attr">closed|filtered：关闭或者被过滤的，无法确定端口是关闭的还是被过滤的</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h5 id="扫描端口"><a href="#扫描端口" class="headerlink" title="扫描端口"></a>扫描端口</h5><h6 id="对目标主机直接扫描"><a href="#对目标主机直接扫描" class="headerlink" title="对目标主机直接扫描"></a>对目标主机直接扫描</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap 192.168.1.1</span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:27 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.0029s latency).</span><br><span class="line">Not shown: 995 closed ports</span><br><span class="line">PORT     STATE    SERVICE</span><br><span class="line">23/tcp   filtered telnet</span><br><span class="line">80/tcp   open     http</span><br><span class="line">139/tcp  filtered netbios-ssn</span><br><span class="line">445/tcp  filtered microsoft-ds</span><br><span class="line">8080/tcp open     http-proxy</span><br></pre></td></tr></table></figure>
+<h6 id="跳过主机发现-Pn"><a href="#跳过主机发现-Pn" class="headerlink" title="跳过主机发现 -Pn"></a>跳过主机发现 -Pn</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -Pn 192.168.1.1</span></span><br><span class="line">Host discovery disabled (-Pn). All addresses will be marked <span class="string">&#x27;up&#x27;</span> and scan <span class="built_in">times</span> will be slower.</span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:28 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.0044s latency).</span><br><span class="line">Not shown: 995 closed ports</span><br><span class="line">PORT     STATE    SERVICE</span><br><span class="line">23/tcp   filtered telnet</span><br><span class="line">80/tcp   open     http</span><br><span class="line">139/tcp  filtered netbios-ssn</span><br><span class="line">445/tcp  filtered microsoft-ds</span><br><span class="line">8080/tcp open     http-proxy</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 11.80 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="显示详细信息-vv"><a href="#显示详细信息-vv" class="headerlink" title="显示详细信息 -vv"></a>显示详细信息 -vv</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -Pn 192.168.1.1 -vv</span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:33 CST</span><br><span class="line">Initiating Ping Scan at 16:33</span><br><span class="line">Scanning 192.168.1.1 [2 ports]</span><br><span class="line">Completed Ping Scan at 16:33, 0.01s elapsed (1 total hosts)</span><br><span class="line">Initiating Parallel DNS resolution of 1 host. at 16:33</span><br><span class="line">Completed Parallel DNS resolution of 1 host. at 16:33, 0.01s elapsed</span><br><span class="line">Initiating Connect Scan at 16:33</span><br><span class="line">Scanning 192.168.1.1 (192.168.1.1) [1000 ports]</span><br><span class="line">Discovered open port 80/tcp on 192.168.1.1</span><br><span class="line">Discovered open port 8080/tcp on 192.168.1.1</span><br><span class="line">Completed Connect Scan at 16:34, 4.80s elapsed (1000 total ports)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up, received syn-ack (0.0054s latency).</span><br><span class="line">Scanned at 2021-02-05 16:33:57 CST <span class="keyword">for</span> 5s</span><br><span class="line">Not shown: 995 closed ports</span><br><span class="line">Reason: 995 conn-refused</span><br><span class="line">PORT     STATE    SERVICE      REASON</span><br><span class="line">23/tcp   filtered telnet       no-response</span><br><span class="line">80/tcp   open     http         syn-ack</span><br><span class="line">139/tcp  filtered netbios-ssn  no-response</span><br><span class="line">445/tcp  filtered microsoft-ds no-response</span><br><span class="line">8080/tcp open     http-proxy   syn-ack</span><br><span class="line"></span><br><span class="line">Read data files from: /opt/homebrew/bin/../share/nmap</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 4.90 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="对目标主机进行区间端口扫描-p80-90"><a href="#对目标主机进行区间端口扫描-p80-90" class="headerlink" title="对目标主机进行区间端口扫描 -p80-90"></a>对目标主机进行区间端口扫描 -p80-90</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap 192.168.1.1 -p 80-90 -vv</span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:35 CST</span><br><span class="line">Initiating Ping Scan at 16:35</span><br><span class="line">Scanning 192.168.1.1 [2 ports]</span><br><span class="line">Completed Ping Scan at 16:35, 0.02s elapsed (1 total hosts)</span><br><span class="line">Initiating Parallel DNS resolution of 1 host. at 16:35</span><br><span class="line">Completed Parallel DNS resolution of 1 host. at 16:35, 0.00s elapsed</span><br><span class="line">Initiating Connect Scan at 16:35</span><br><span class="line">Scanning 192.168.1.1 (192.168.1.1) [11 ports]</span><br><span class="line">Discovered open port 80/tcp on 192.168.1.1</span><br><span class="line">Completed Connect Scan at 16:35, 1.13s elapsed (11 total ports)</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up, received syn-ack (0.014s latency).</span><br><span class="line">Scanned at 2021-02-05 16:35:15 CST <span class="keyword">for</span> 1s</span><br><span class="line"></span><br><span class="line">PORT   STATE  SERVICE      REASON</span><br><span class="line">80/tcp open   http         syn-ack</span><br><span class="line">81/tcp closed hosts2-ns    conn-refused</span><br><span class="line">82/tcp closed xfer         conn-refused</span><br><span class="line">83/tcp closed mit-ml-dev   conn-refused</span><br><span class="line">84/tcp closed ctf          conn-refused</span><br><span class="line">85/tcp closed mit-ml-dev   conn-refused</span><br><span class="line">86/tcp closed mfcobol      conn-refused</span><br><span class="line">87/tcp closed priv-term-l  conn-refused</span><br><span class="line">88/tcp closed kerberos-sec conn-refused</span><br><span class="line">89/tcp closed su-mit-tg    conn-refused</span><br><span class="line">90/tcp closed dnsix        conn-refused</span><br><span class="line"></span><br><span class="line">Read data files from: /opt/homebrew/bin/../share/nmap</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 1.21 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="对目标主机进行ping扫描"><a href="#对目标主机进行ping扫描" class="headerlink" title="对目标主机进行ping扫描"></a>对目标主机进行ping扫描</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -sP 192.168.1.1         </span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:49 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.0091s latency).</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 0.06 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="对目标主机进行路由追踪"><a href="#对目标主机进行路由追踪" class="headerlink" title="对目标主机进行路由追踪"></a>对目标主机进行路由追踪</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -traceroute gacdu.com    </span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 16:55 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> gacdu.com (185.199.111.153)</span><br><span class="line">Host is up (0.097s latency).</span><br><span class="line">Other addresses <span class="keyword">for</span> gacdu.com (not scanned): 185.199.110.153 185.199.109.153 185.199.108.153</span><br><span class="line">Not shown: 998 filtered ports</span><br><span class="line">PORT    STATE SERVICE</span><br><span class="line">80/tcp  open  http</span><br><span class="line">443/tcp open  https</span><br><span class="line"></span><br><span class="line">TRACEROUTE (using port 80/tcp)</span><br><span class="line">HOP RTT       ADDRESS</span><br><span class="line">1   5.81 ms   192.168.1.1 (192.168.1.1)</span><br><span class="line">2   10.73 ms  10.42.144.1 (10.42.144.1)</span><br><span class="line">3   13.84 ms  125.34.175.137</span><br><span class="line">4   12.54 ms  124.65.194.173</span><br><span class="line">5   12.56 ms  219.158.18.66</span><br><span class="line">6   15.35 ms  219.158.3.50</span><br><span class="line">7   105.65 ms xe-4-1-0.r26.tokyjp05.jp.bb.gin.ntt.net (129.250.8.93)</span><br><span class="line">8   73.38 ms  ae-0.r30.tokyjp05.jp.bb.gin.ntt.net (129.250.2.11)</span><br><span class="line">9   97.41 ms  ae-2.r00.tokyjp08.jp.bb.gin.ntt.net (129.250.6.127)</span><br><span class="line">10  244.79 ms ae-3.fastly.tokyjp08.jp.bb.gin.ntt.net (117.103.177.70)</span><br><span class="line">11  106.52 ms 185.199.111.153</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 18.77 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="检测网段存活状态主机"><a href="#检测网段存活状态主机" class="headerlink" title="检测网段存活状态主机"></a>检测网段存活状态主机</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -sP 192.168.1.0/24     </span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 17:04 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.046s latency).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.6 (192.168.1.6)</span><br><span class="line">Host is up (0.0075s latency).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.7 (192.168.1.7)</span><br><span class="line">Host is up (0.00021s latency).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.8 (192.168.1.8)</span><br><span class="line">Host is up (0.072s latency).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.9 (192.168.1.9)</span><br><span class="line">Host is up (0.025s latency).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.13 (192.168.1.13)</span><br><span class="line">Host is up (0.054s latency).</span><br><span class="line">Nmap <span class="keyword">done</span>: 256 IP addresses (6 hosts up) scanned <span class="keyword">in</span> 35.41 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="对目标主机进行系统探测"><a href="#对目标主机进行系统探测" class="headerlink" title="对目标主机进行系统探测"></a>对目标主机进行系统探测</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -O 192.168.1.1</span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 17:09 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.0064s latency).</span><br><span class="line">Not shown: 995 closed ports</span><br><span class="line">PORT     STATE    SERVICE</span><br><span class="line">23/tcp   filtered telnet</span><br><span class="line">80/tcp   open     http</span><br><span class="line">139/tcp  filtered netbios-ssn</span><br><span class="line">445/tcp  filtered microsoft-ds</span><br><span class="line">8080/tcp open     http-proxy</span><br><span class="line">MAC Address: E4:7E:9A:4C:9F:06 (zte)</span><br><span class="line">Device <span class="built_in">type</span>: general purpose</span><br><span class="line">Running: Linux 2.6.X|3.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:2.6 cpe:/o:linux:linux_kernel:3</span><br><span class="line">OS details: Linux 2.6.32 - 3.10</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line"></span><br><span class="line">OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 4.11 seconds</span><br></pre></td></tr></table></figure>
+<h6 id="对目标主机进行版本检测"><a href="#对目标主机进行版本检测" class="headerlink" title="对目标主机进行版本检测"></a>对目标主机进行版本检测</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -sV 192.168.1.1   </span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 17:16 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.1.1 (192.168.1.1)</span><br><span class="line">Host is up (0.0039s latency).</span><br><span class="line">Not shown: 995 closed ports</span><br><span class="line">PORT     STATE    SERVICE      VERSION</span><br><span class="line">23/tcp   filtered telnet</span><br><span class="line">80/tcp   open     http</span><br><span class="line">139/tcp  filtered netbios-ssn</span><br><span class="line">445/tcp  filtered microsoft-ds</span><br><span class="line">8080/tcp open     http         Jetty 6.1.x</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag"># 网络安全</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/20/Scala%E5%9B%9E%E9%A1%BE%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="prev" title="Scala回顾学习与总结">
+      <i class="fa fa-chevron-left"></i> Scala回顾学习与总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">使用语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E8%AF%B4%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">测试环境说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E7%8A%B6%E6%80%81"><span class="nav-number">4.</span> <span class="nav-text">端口状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%AB%E6%8F%8F%E7%AB%AF%E5%8F%A3"><span class="nav-number">5.</span> <span class="nav-text">扫描端口</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E7%9B%B4%E6%8E%A5%E6%89%AB%E6%8F%8F"><span class="nav-number">5.1.</span> <span class="nav-text">对目标主机直接扫描</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%B7%B3%E8%BF%87%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0-Pn"><span class="nav-number">5.2.</span> <span class="nav-text">跳过主机发现 -Pn</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF-vv"><span class="nav-number">5.3.</span> <span class="nav-text">显示详细信息 -vv</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E8%BF%9B%E8%A1%8C%E5%8C%BA%E9%97%B4%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-p80-90"><span class="nav-number">5.4.</span> <span class="nav-text">对目标主机进行区间端口扫描 -p80-90</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E8%BF%9B%E8%A1%8Cping%E6%89%AB%E6%8F%8F"><span class="nav-number">5.5.</span> <span class="nav-text">对目标主机进行ping扫描</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E8%BF%9B%E8%A1%8C%E8%B7%AF%E7%94%B1%E8%BF%BD%E8%B8%AA"><span class="nav-number">5.6.</span> <span class="nav-text">对目标主机进行路由追踪</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E7%BD%91%E6%AE%B5%E5%AD%98%E6%B4%BB%E7%8A%B6%E6%80%81%E4%B8%BB%E6%9C%BA"><span class="nav-number">5.7.</span> <span class="nav-text">检测网段存活状态主机</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E8%BF%9B%E8%A1%8C%E7%B3%BB%E7%BB%9F%E6%8E%A2%E6%B5%8B"><span class="nav-number">5.8.</span> <span class="nav-text">对目标主机进行系统探测</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E6%A3%80%E6%B5%8B"><span class="nav-number">5.9.</span> <span class="nav-text">对目标主机进行版本检测</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">灰度觉知</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灰度觉知</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'LIvmEYUWUQz5AvljkH3a8CUG-gzGzoHsz',
+      appKey     : 'oOY9C7i7r3FIqnfo0lvWHiQk',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
