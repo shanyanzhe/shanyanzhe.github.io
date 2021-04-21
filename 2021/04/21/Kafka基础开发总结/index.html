@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Kafka环境依赖安装相关组件安装JDK1# sudo apt install openjdk-11-jdk-headless -y   下载zookeeper1# wget https:&#x2F;&#x2F;apachemirror.sg.wuchna.com&#x2F;zookeeper&#x2F;zookeeper-3.6.3&#x2F;apache-zookeeper-3.6.3-bin.tar.gz   下载Kafka1# wget">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka基础开发总结">
+<meta property="og:url" content="http://example.com/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="灰度智知">
+<meta property="og:description" content="Kafka环境依赖安装相关组件安装JDK1# sudo apt install openjdk-11-jdk-headless -y   下载zookeeper1# wget https:&#x2F;&#x2F;apachemirror.sg.wuchna.com&#x2F;zookeeper&#x2F;zookeeper-3.6.3&#x2F;apache-zookeeper-3.6.3-bin.tar.gz   下载Kafka1# wget">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-21T03:31:12.000Z">
+<meta property="article:modified_time" content="2021-04-21T07:55:33.643Z">
+<meta property="article:author" content="灰度智知">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kafka基础开发总结 | 灰度智知</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?acd64854f8a11073ae66b1445644c5a8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">灰度智知</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="灰度智知">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰度智知">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka基础开发总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-21 11:31:12 / 修改时间：15:55:33" itemprop="dateCreated datePublished" datetime="2021-04-21T11:31:12+08:00">2021-04-21</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="Kafka环境依赖安装"><a href="#Kafka环境依赖安装" class="headerlink" title="Kafka环境依赖安装"></a>Kafka环境依赖安装</h4><h5 id="相关组件"><a href="#相关组件" class="headerlink" title="相关组件"></a>相关组件</h5><h6 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudo apt install openjdk-11-jdk-headless -y</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="下载zookeeper"><a href="#下载zookeeper" class="headerlink" title="下载zookeeper"></a>下载zookeeper</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wget https://apachemirror.sg.wuchna.com/zookeeper/zookeeper-3.6.3/apache-zookeeper-3.6.3-bin.tar.gz</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="下载Kafka"><a href="#下载Kafka" class="headerlink" title="下载Kafka"></a>下载Kafka</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wget https://apachemirror.sg.wuchna.com/kafka/2.8.0/kafka_2.12-2.8.0.tgz</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h5 id="部署zookeeper"><a href="#部署zookeeper" class="headerlink" title="部署zookeeper"></a>部署zookeeper</h5><h6 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar -zxvf apache-zookeeper-3.6.3-bin.tar.gz &amp;&amp; mv apache-zookeeper-3.6.3-bin/ /usr/local/zookeeper</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="复制配置文件"><a href="#复制配置文件" class="headerlink" title="复制配置文件"></a>复制配置文件</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cp zoo_sample.cfg zoo.cfg</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h6><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The number of milliseconds of each tick</span></span><br><span class="line"><span class="attr">tickTime</span>=<span class="string">2000</span></span><br><span class="line"><span class="comment"># The number of ticks that the initial </span></span><br><span class="line"><span class="comment"># synchronization phase can take</span></span><br><span class="line"><span class="attr">initLimit</span>=<span class="string">5</span></span><br><span class="line"><span class="comment"># The number of ticks that can pass between </span></span><br><span class="line"><span class="comment"># sending a request and getting an acknowledgement</span></span><br><span class="line"><span class="attr">syncLimit</span>=<span class="string">2</span></span><br><span class="line"><span class="comment"># the directory where the snapshot is stored.</span></span><br><span class="line"><span class="comment"># do not use /tmp for storage, /tmp here is just </span></span><br><span class="line"><span class="comment"># example sakes.</span></span><br><span class="line"><span class="attr">dataDir</span>=<span class="string">/usr/local/zookeeper/data</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cluster address</span></span><br><span class="line"><span class="meta">server.1</span>=<span class="string">changyou003:2888:3888</span></span><br><span class="line"><span class="meta">server.2</span>=<span class="string">changyou004:2888:3888</span></span><br><span class="line"><span class="meta">server.3</span>=<span class="string">changyou005:2888:3888</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="生成myid文件"><a href="#生成myid文件" class="headerlink" title="生成myid文件"></a>生成myid文件</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># touch /usr/local/zookeeper/data/myid</span></span><br><span class="line">vim /usr/<span class="built_in">local</span>/zookeeper/data/myid</span><br><span class="line">1 <span class="comment"># 不同的主机不同数字编号</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="云主机打开端口访问权限"><a href="#云主机打开端口访问权限" class="headerlink" title="云主机打开端口访问权限"></a>云主机打开端口访问权限</h6><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">2181</span> <span class="string">客户端访问端口</span></span><br><span class="line"><span class="attr">2888</span> <span class="string">服务端传输数据端口</span></span><br><span class="line"><span class="attr">3888</span> <span class="string">选举端口</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="检查主机端口是否被占用"><a href="#检查主机端口是否被占用" class="headerlink" title="检查主机端口是否被占用"></a>检查主机端口是否被占用</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># netstat -lnpt | grep 2181</span></span><br><span class="line"><span class="comment"># lsof -i:2181</span></span><br><span class="line"><span class="comment"># ps -ef | grep &lt;pid&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="部署kafka"><a href="#部署kafka" class="headerlink" title="部署kafka"></a>部署kafka</h5><h6 id="解压kafka"><a href="#解压kafka" class="headerlink" title="解压kafka"></a>解压kafka</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar -zxvf kafka_2.12-2.8.0.tgz &amp;&amp; mv kafka_2.12-2.8.0 /usr/local/kafka</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="编辑配置文件-1"><a href="#编辑配置文件-1" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h6><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Licensed to the Apache Software Foundation (ASF) under one or more</span></span><br><span class="line"><span class="comment"># contributor license agreements.  See the NOTICE file distributed with</span></span><br><span class="line"><span class="comment"># this work for additional information regarding copyright ownership.</span></span><br><span class="line"><span class="comment"># The ASF licenses this file to You under the Apache License, Version 2.0</span></span><br><span class="line"><span class="comment"># (the &quot;License&quot;); you may not use this file except in compliance with</span></span><br><span class="line"><span class="comment"># the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#    http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># see kafka.server.KafkaConfig for additional details and defaults</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Server Basics #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The id of the broker. This must be set to a unique integer for each broker.</span></span><br><span class="line"><span class="meta">broker.id</span>=<span class="string">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Socket Server Settings #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The address the socket server listens on. It will get the value returned from </span></span><br><span class="line"><span class="comment"># java.net.InetAddress.getCanonicalHostName() if not configured.</span></span><br><span class="line"><span class="comment">#   FORMAT:</span></span><br><span class="line"><span class="comment">#     listeners = listener_name://host_name:port</span></span><br><span class="line"><span class="comment">#   EXAMPLE:</span></span><br><span class="line"><span class="comment">#     listeners = PLAINTEXT://your.host.name:9092</span></span><br><span class="line"><span class="attr">listeners</span>=<span class="string">PLAINTEXT://changyou003:9092</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Hostname and port the broker will advertise to producers and consumers. If not set, </span></span><br><span class="line"><span class="comment"># it uses the value for &quot;listeners&quot; if configured.  Otherwise, it will use the value</span></span><br><span class="line"><span class="comment"># returned from java.net.InetAddress.getCanonicalHostName().</span></span><br><span class="line"><span class="comment">#advertised.listeners=PLAINTEXT://your.host.name:9092</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details</span></span><br><span class="line"><span class="comment">#listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of threads that the server uses for receiving requests from the network and sending responses to the network</span></span><br><span class="line"><span class="meta">num.network.threads</span>=<span class="string">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of threads that the server uses for processing requests, which may include disk I/O</span></span><br><span class="line"><span class="meta">num.io.threads</span>=<span class="string">8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The send buffer (SO_SNDBUF) used by the socket server</span></span><br><span class="line"><span class="meta">socket.send.buffer.bytes</span>=<span class="string">102400</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The receive buffer (SO_RCVBUF) used by the socket server</span></span><br><span class="line"><span class="meta">socket.receive.buffer.bytes</span>=<span class="string">102400</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum size of a request that the socket server will accept (protection against OOM)</span></span><br><span class="line"><span class="meta">socket.request.max.bytes</span>=<span class="string">104857600</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Log Basics #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A comma separated list of directories under which to store log files</span></span><br><span class="line"><span class="meta">log.dirs</span>=<span class="string">/usr/local/kakfka/kafka-logs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The default number of log partitions per topic. More partitions allow greater</span></span><br><span class="line"><span class="comment"># parallelism for consumption, but this will also result in more files across</span></span><br><span class="line"><span class="comment"># the brokers.</span></span><br><span class="line"><span class="meta">num.partitions</span>=<span class="string">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.</span></span><br><span class="line"><span class="comment"># This value is recommended to be increased for installations with data dirs located in RAID array.</span></span><br><span class="line"><span class="meta">num.recovery.threads.per.data.dir</span>=<span class="string">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Internal Topic Settings  #############################</span></span><br><span class="line"><span class="comment"># The replication factor for the group metadata internal topics &quot;__consumer_offsets&quot; and &quot;__transaction_state&quot;</span></span><br><span class="line"><span class="comment"># For anything other than development testing, a value greater than 1 is recommended to ensure availability such as 3.</span></span><br><span class="line"><span class="meta">offsets.topic.replication.factor</span>=<span class="string">1</span></span><br><span class="line"><span class="meta">transaction.state.log.replication.factor</span>=<span class="string">1</span></span><br><span class="line"><span class="meta">transaction.state.log.min.isr</span>=<span class="string">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Log Flush Policy #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Messages are immediately written to the filesystem but by default we only fsync() to sync</span></span><br><span class="line"><span class="comment"># the OS cache lazily. The following configurations control the flush of data to disk.</span></span><br><span class="line"><span class="comment"># There are a few important trade-offs here:</span></span><br><span class="line"><span class="comment">#    1. Durability: Unflushed data may be lost if you are not using replication.</span></span><br><span class="line"><span class="comment">#    2. Latency: Very large flush intervals may lead to latency spikes when the flush does occur as there will be a lot of data to flush.</span></span><br><span class="line"><span class="comment">#    3. Throughput: The flush is generally the most expensive operation, and a small flush interval may lead to excessive seeks.</span></span><br><span class="line"><span class="comment"># The settings below allow one to configure the flush policy to flush data after a period of time or</span></span><br><span class="line"><span class="comment"># every N messages (or both). This can be done globally and overridden on a per-topic basis.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of messages to accept before forcing a flush of data to disk</span></span><br><span class="line"><span class="comment">#log.flush.interval.messages=10000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum amount of time a message can sit in a log before we force a flush</span></span><br><span class="line"><span class="comment">#log.flush.interval.ms=1000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Log Retention Policy #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following configurations control the disposal of log segments. The policy can</span></span><br><span class="line"><span class="comment"># be set to delete segments after a period of time, or after a given size has accumulated.</span></span><br><span class="line"><span class="comment"># A segment will be deleted whenever *either* of these criteria are met. Deletion always happens</span></span><br><span class="line"><span class="comment"># from the end of the log.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The minimum age of a log file to be eligible for deletion due to age</span></span><br><span class="line"><span class="meta">log.retention.hours</span>=<span class="string">168</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A size-based retention policy for logs. Segments are pruned from the log unless the remaining</span></span><br><span class="line"><span class="comment"># segments drop below log.retention.bytes. Functions independently of log.retention.hours.</span></span><br><span class="line"><span class="comment">#log.retention.bytes=1073741824</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The maximum size of a log segment file. When this size is reached a new log segment will be created.</span></span><br><span class="line"><span class="meta">log.segment.bytes</span>=<span class="string">1073741824</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The interval at which log segments are checked to see if they can be deleted according</span></span><br><span class="line"><span class="comment"># to the retention policies</span></span><br><span class="line"><span class="meta">log.retention.check.interval.ms</span>=<span class="string">300000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Zookeeper #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Zookeeper connection string (see zookeeper docs for details).</span></span><br><span class="line"><span class="comment"># This is a comma separated host:port pairs, each corresponding to a zk</span></span><br><span class="line"><span class="comment"># server. e.g. &quot;127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002&quot;.</span></span><br><span class="line"><span class="comment"># You can also append an optional chroot string to the urls to specify the</span></span><br><span class="line"><span class="comment"># root directory for all kafka znodes.</span></span><br><span class="line"><span class="meta">zookeeper.connect</span>=<span class="string">changyou003:2181,changyou004:2181,changyou005:2181</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Timeout in ms for connecting to zookeeper</span></span><br><span class="line"><span class="meta">zookeeper.connection.timeout.ms</span>=<span class="string">18000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# Group Coordinator Settings #############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The following configuration specifies the time, in milliseconds, that the GroupCoordinator will delay the initial consumer rebalance.</span></span><br><span class="line"><span class="comment"># The rebalance will be further delayed by the value of group.initial.rebalance.delay.ms as new members join the group, up to a maximum of max.poll.interval.ms.</span></span><br><span class="line"><span class="comment"># The default value for this is 3 seconds.</span></span><br><span class="line"><span class="comment"># We override this to 0 here as it makes for a better out-of-the-box experience for development and testing.</span></span><br><span class="line"><span class="comment"># However, in production environments the default value of 3 seconds is more suitable as this will help to avoid unnecessary, and potentially expensive, rebalances during application startup.</span></span><br><span class="line"><span class="meta">group.initial.rebalance.delay.ms</span>=<span class="string">0</span></span><br></pre></td></tr></table></figure>
+
+
+<h6 id="启动Kafka"><a href="#启动Kafka" class="headerlink" title="启动Kafka"></a>启动Kafka</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties</span></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="Kafka角色"><a href="#Kafka角色" class="headerlink" title="Kafka角色"></a>Kafka角色</h5><h6 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h6><p>物理概念，组成Kafka集群的物理节点，类比成数据库。</p>
+<h6 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h6><p>逻辑概念，保存生产的数据，类比成数据表。</p>
+<h6 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h6><p>生产者，生产数据</p>
+<h6 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h6><p>消费者，消费数据</p>
+<h6 id="Consumer-Group"><a href="#Consumer-Group" class="headerlink" title="Consumer Group"></a>Consumer Group</h6><p>消费者组，多个消费者共存，消费相同数据</p>
+<h6 id="Offset"><a href="#Offset" class="headerlink" title="Offset"></a>Offset</h6><p>数据消费偏移量</p>
+<h6 id="Partition"><a href="#Partition" class="headerlink" title="Partition"></a>Partition</h6><p>数据分区，保证数据的高并发</p>
+<h6 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h6><p>数据副本，保证数据的高可靠</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/19/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86SpringBoot%E5%B9%B6%E9%85%8D%E7%BD%AEhttps/" rel="prev" title="Nginx反向代理SpringBoot并配置https">
+      <i class="fa fa-chevron-left"></i> Nginx反向代理SpringBoot并配置https
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka%E7%8E%AF%E5%A2%83%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">Kafka环境依赖安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">相关组件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDzookeeper"><span class="nav-number">1.1.2.</span> <span class="nav-text">下载zookeeper</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDKafka"><span class="nav-number">1.1.3.</span> <span class="nav-text">下载Kafka</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2zookeeper"><span class="nav-number">1.2.</span> <span class="nav-text">部署zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.2.1.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">复制配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">编辑配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%94%9F%E6%88%90myid%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.4.</span> <span class="nav-text">生成myid文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BA%91%E4%B8%BB%E6%9C%BA%E6%89%93%E5%BC%80%E7%AB%AF%E5%8F%A3%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90"><span class="nav-number">1.2.5.</span> <span class="nav-text">云主机打开端口访问权限</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E4%B8%BB%E6%9C%BA%E7%AB%AF%E5%8F%A3%E6%98%AF%E5%90%A6%E8%A2%AB%E5%8D%A0%E7%94%A8"><span class="nav-number">1.2.6.</span> <span class="nav-text">检查主机端口是否被占用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2kafka"><span class="nav-number">1.3.</span> <span class="nav-text">部署kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8Bkafka"><span class="nav-number">1.3.1.</span> <span class="nav-text">解压kafka</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">编辑配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8Kafka"><span class="nav-number">1.3.3.</span> <span class="nav-text">启动Kafka</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kafka%E8%A7%92%E8%89%B2"><span class="nav-number">1.4.</span> <span class="nav-text">Kafka角色</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Broker"><span class="nav-number">1.4.1.</span> <span class="nav-text">Broker</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Topic"><span class="nav-number">1.4.2.</span> <span class="nav-text">Topic</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Producer"><span class="nav-number">1.4.3.</span> <span class="nav-text">Producer</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Consumer"><span class="nav-number">1.4.4.</span> <span class="nav-text">Consumer</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Consumer-Group"><span class="nav-number">1.4.5.</span> <span class="nav-text">Consumer Group</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Offset"><span class="nav-number">1.4.6.</span> <span class="nav-text">Offset</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Partition"><span class="nav-number">1.4.7.</span> <span class="nav-text">Partition</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Replication"><span class="nav-number">1.4.8.</span> <span class="nav-text">Replication</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">灰度智知</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灰度智知</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'LIvmEYUWUQz5AvljkH3a8CUG-gzGzoHsz',
+      appKey     : 'oOY9C7i7r3FIqnfo0lvWHiQk',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
