@@ -159,6 +159,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/22/Python%E5%9F%BA%E4%BA%8Epeewee%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="灰度跃迁">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰度跃迁">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/22/Python%E5%9F%BA%E4%BA%8Epeewee%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-title-link" itemprop="url">Python基于peewee操作数据库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-22 14:41:14 / 修改时间：15:16:47" itemprop="dateCreated datePublished" datetime="2021-04-22T14:41:14+08:00">2021-04-22</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/22/Python%E5%9F%BA%E4%BA%8Epeewee%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/22/Python%E5%9F%BA%E4%BA%8Epeewee%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>peewee是类似于Django model操作数据库的orm框架，主要的功能是定义模型，存储数据，检索数据。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip install peewee</span></span><br><span class="line"><span class="comment"># pip install pymysql</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h4><h5 id="定义新表模型"><a href="#定义新表模型" class="headerlink" title="定义新表模型"></a>定义新表模型</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> peewee <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">db = MySQLDatabase(<span class="string">&quot;db.name&quot;</span>, host=<span class="string">&quot;db.ipaddress&quot;</span>, user=<span class="string">&quot;db.user&quot;</span>, passwd=<span class="string">&quot;db.password&quot;</span>, port=<span class="string">&quot;db.port&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseModel</span>(<span class="params">Model</span>):</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        database = database</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span>.<span class="title">name</span>(<span class="params">BaseModel</span>):</span>  <span class="comment"># class名字首字母大写</span></span><br><span class="line">    field.name = TextField(verbose_name=<span class="string">&quot;字段名称&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        table_name = <span class="string">&quot;table.name&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> <span class="string">&quot;__name__&quot;</span> == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    db.create_tables([Class.name])</span><br><span class="line">    </span><br><span class="line">Tips:具体的字段类型参考(http://docs.peewee-orm.com/en/latest/peewee/models.html)</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="定义已有表模型"><a href="#定义已有表模型" class="headerlink" title="定义已有表模型"></a>定义已有表模型</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python -m pwiz -e mysql -u db.user -p 3306 -P -H db.ipaddress -t table.name db.name</span></span><br><span class="line">Tips: 上面的shell命令是根据Mysql数据库来生成模型，如果是其他类型的数据库可以参考如下链接(http://docs.peewee-orm.com/en/latest/peewee/playhouse.html<span class="comment">#pwiz)</span></span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/21/Kafka%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -571,12 +653,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
